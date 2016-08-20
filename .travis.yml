@@ -14,7 +14,10 @@ install:
 script:
   # execute unit and integration tests
   - mvn -e verify -B
-
+  
+after_success:
+  - bash <(curl -s https://codecov.io/bash)  
+  
 os:
   - linux
   - windows
