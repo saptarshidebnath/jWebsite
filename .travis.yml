@@ -1,11 +1,7 @@
 language: java
 
-sudo: false
-
 jdk:
   - oraclejdk8
-  - oraclejdk7
-  - openjdk7
 
 before_install:
    - mvn --version
@@ -30,7 +26,7 @@ cache:
 branches:
   only:
   - master
-  
+
 notifications:
   email:
   - saptarshi.devnath@gmail.com
