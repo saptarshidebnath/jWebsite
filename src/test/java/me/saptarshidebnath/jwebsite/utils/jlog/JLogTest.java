@@ -28,6 +28,7 @@ public class JLogTest {
   private static String exceptionMessage = null;
   private StreamHandler testHandler = null;
   private ByteArrayOutputStream logHandlerBAOS = null;
+  private JLogConsoleFormatter formatter = null;
 
   @org.junit.BeforeClass
   public static void setUp() throws Exception {
@@ -49,7 +50,7 @@ public class JLogTest {
     //
     this.logHandlerBAOS = new ByteArrayOutputStream();
 
-    JLogConsoleFormatter formatter = new JLogConsoleFormatter();
+    formatter = new JLogConsoleFormatter();
     formatter.setDebug(false);
     formatter.setStackTraceDepth(DEFAULT_STACK_TRACE_CLASS_NAME_DEPTH - 1);
     PrintStream ps = new PrintStream(this.logHandlerBAOS, true, TEXT_ENCODING_UTF_8);
@@ -67,13 +68,22 @@ public class JLogTest {
   public void getHandlers() {
     Handler[] handlersList = JLog.getHandlers();
     assertThat("Checking the count of the handler attached to the log : ", handlersList.length >= 1);
-    assertThat("Checking if our hnadler is attached to the logger or not : ", handlersList, hasItemInArray(testHandler));
+    assertThat("Checking if our handler is attached to the logger or not : ", handlersList, hasItemInArray(testHandler));
   }
 
   @org.junit.Test
   public void logWithoutException() throws IOException {
     JLog.log(Level.INFO, testMessage);
     this.testLoggerWithoutExceptionWith(Level.INFO, JLogTest.testMessage);
+  }
+
+  @org.junit.Test
+  public void logWithoutExceptionAndDebugModeSet() throws IOException {
+    formatter.setDebug(true);
+    JLog.log(Level.INFO, testMessage);
+    String[] loggedMessage = getCapturedLog().split(System.lineSeparator());
+    assertThat("Checking number of printed", loggedMessage.length, greaterThan(0));
+    formatter.setDebug(false);
   }
 
   @org.junit.Test
