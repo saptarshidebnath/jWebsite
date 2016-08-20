@@ -2,13 +2,12 @@ package me.saptarshidebnath.jwebsite.servlet;
 
 import me.saptarshidebnath.jwebsite.utils.jlog.JLog;
 
-import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * The Controller servlet for jWebsite.
@@ -62,6 +61,6 @@ public class UrlHandler extends HttpServlet {
    */
   @Override
   public void init() {
-    JLog.severe("Initiated !!");
+    JLog.info("Initiated !!");
   }
 }
