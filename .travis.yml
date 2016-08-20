@@ -1,0 +1,36 @@
+language: java
+
+sudo: false
+
+jdk:
+  - oraclejdk8
+  - oraclejdk7
+  - openjdk7
+
+before_install:
+   - mvn --version
+
+install:
+  # install without any testing
+  - mvn install -U -Dmaven.test.skip=true -B -V -q -T4 -C
+
+script:
+  # execute unit and integration tests
+  - mvn -e verify -B
+
+os:
+  - linux
+  - windows
+  - osx
+
+cache:
+  directories:
+  - $HOME/.m2
+
+branches:
+  only:
+  - master
+  
+notifications:
+  email:
+  - saptarshi.devnath@gmail.com
