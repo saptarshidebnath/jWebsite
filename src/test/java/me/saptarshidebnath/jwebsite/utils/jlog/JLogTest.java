@@ -1,5 +1,12 @@
 package me.saptarshidebnath.jwebsite.utils.jlog;
 
+import static me.saptarshidebnath.jwebsite.utils.Constants.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasItemInArray;
+import static org.hamcrest.core.StringEndsWith.endsWith;
+import static org.hamcrest.core.StringStartsWith.startsWith;
+
 import org.junit.Assert;
 
 import java.io.ByteArrayOutputStream;
@@ -11,13 +18,6 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.StreamHandler;
 
-import static me.saptarshidebnath.jwebsite.utils.Constants.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.hasItemInArray;
-import static org.hamcrest.core.StringEndsWith.endsWith;
-import static org.hamcrest.core.StringStartsWith.startsWith;
-
 /**
  *
  */
@@ -28,14 +28,17 @@ public class JLogTest {
   private static String exceptionMessage = null;
   private StreamHandler testHandler = null;
   private ByteArrayOutputStream logHandlerBAOS = null;
-  private JLogConsoleFormatter formatter = null;
+  private ConsoleFormatter formatter = null;
 
   @org.junit.BeforeClass
   public static void setUp() throws Exception {
     Class.forName("me.saptarshidebnath.jwebsite.utils.jlog.JLog");
     JLogTest.testMessage = "Test Message " + new Date();
-    JLogTest.loggedMessageRegexWihtoutException = "^\\[\\s{1}" + REPLACEMENT_LEVEL_VALUE + "\\s{1}\\]\\s{1}-\\s{1}\\[\\s{1}([A-Z]{1}[a-z]{2}\\s{1}){2}[0-9]{2}\\s{1}([0-9]{2}:){2}[0-9]{2}\\s{1}[A-Z]{3}\\s{1}[0-9]{4}\\s{1}\\]\\s{1}-\\s\\[.*,\\s[0-9]+\\s\\]\\s>>\\s" + JLogTest.testMessage + "$";
-    JLogTest.loggedMessageStackTraceRegex = "^\\s+at\\s{1}[a-zA-Z]+(\\.[a-zA-Z0-9\\-\\$]+)+\\(.*\\)$";
+    JLogTest.loggedMessageRegexWihtoutException = "^\\[\\s{1}" + REPLACEMENT_LEVEL_VALUE +
+                                                  "\\s{1}\\]\\s{1}-\\s{1}\\[\\s{1}([A-Z]{1}[a-z]{2}\\s{1}){2}[0-9]{2}\\s{1}([0-9]{2}:){2}[0-9]{2}\\s{1}[A-Z]{3}\\s{1}[0-9]{4}\\s{1}\\]\\s{1}-\\s\\[.*,\\s[0-9]+\\s\\]\\s>>\\s" +
+                                                  JLogTest.testMessage + "$";
+    JLogTest.loggedMessageStackTraceRegex =
+        "^\\s+at\\s{1}[a-zA-Z]+(\\.[a-zA-Z0-9\\-\\$]+)+\\(.*\\)$";
     JLogTest.exceptionMessage = "Test Message " + new Date();
   }
 
@@ -50,25 +53,28 @@ public class JLogTest {
     //
     this.logHandlerBAOS = new ByteArrayOutputStream();
 
-    formatter = new JLogConsoleFormatter();
-    formatter.setDebug(false);
-    formatter.setStackTraceDepth(DEFAULT_STACK_TRACE_CLASS_NAME_DEPTH - 1);
-    PrintStream ps = new PrintStream(this.logHandlerBAOS, true, TEXT_ENCODING_UTF_8);
-    testHandler = new StreamHandler(ps, formatter);
-    JLog.addHandler(testHandler);
+    this.formatter = new ConsoleFormatter();
+    this.formatter.setDebug(false);
+    this.formatter.setStackTraceDepth(DEFAULT_STACK_TRACE_CLASS_NAME_DEPTH - 1);
+    final PrintStream ps = new PrintStream(this.logHandlerBAOS, true, TEXT_ENCODING_UTF_8);
+    this.testHandler = new StreamHandler(ps, this.formatter);
+    JLog.addHandler(this.testHandler);
   }
 
   @org.junit.After
   public void afterTest() {
-    JLog.removeHandler(testHandler);
-    testHandler.close();
+    JLog.removeHandler(this.testHandler);
+    this.testHandler.close();
   }
 
   @org.junit.Test
   public void getHandlers() {
-    Handler[] handlersList = JLog.getHandlers();
-    assertThat("Checking the count of the handler attached to the log : ", handlersList.length >= 1);
-    assertThat("Checking if our handler is attached to the logger or not : ", handlersList, hasItemInArray(testHandler));
+    final Handler[] handlersList = JLog.getHandlers();
+    assertThat("Checking the count of the handler attached to the log : ",
+        handlersList.length >= 1);
+    assertThat("Checking if our handler is attached to the logger or not : ", handlersList,
+        hasItemInArray(
+            this.testHandler));
   }
 
   @org.junit.Test
@@ -79,11 +85,11 @@ public class JLogTest {
 
   @org.junit.Test
   public void logWithoutExceptionAndDebugModeSet() throws IOException {
-    formatter.setDebug(true);
+    this.formatter.setDebug(true);
     JLog.log(Level.INFO, testMessage);
-    String[] loggedMessage = getCapturedLog().split(System.lineSeparator());
+    final String[] loggedMessage = getCapturedLog().split(System.lineSeparator());
     assertThat("Checking number of printed", loggedMessage.length, greaterThan(0));
-    formatter.setDebug(false);
+    this.formatter.setDebug(false);
   }
 
   @org.junit.Test
@@ -129,29 +135,42 @@ public class JLogTest {
   }
 
 
-  private void testLoggerWithoutExceptionWith(Level level, String testMessage) throws IOException {
-    String loggedMessage = getCapturedLog();
-    System.out.println("Log received :-");
-    System.out.println(loggedMessage);
-    System.out.println();
+  private void testLoggerWithoutExceptionWith(final Level level, final String testMessage)
+      throws IOException {
+    final String loggedMessage = getCapturedLog();
+//    System.out.println("Log received :-");
+//    System.out.println(loggedMessage);
+//    System.out.println();
     assertThat("Checking log without exception > log end : ", loggedMessage, endsWith(testMessage));
-    assertThat("Checking log without exception > start : ", loggedMessage, startsWith("[ " + level.getLocalizedName() + " ]"));
-    Assert.assertTrue("Checking log without exception > with regex to match the generic pattern : ", loggedMessage.matches(JLogTest.loggedMessageRegexWihtoutException.replaceAll(REPLACEMENT_LEVEL_VALUE, level.getLocalizedName())));
+    assertThat("Checking log without exception > start : ", loggedMessage,
+        startsWith("[ " + level.getLocalizedName() + " ]"));
+    Assert.assertTrue("Checking log without exception > with regex to match the generic pattern : ",
+        loggedMessage.matches(
+            JLogTest.loggedMessageRegexWihtoutException.replaceAll(REPLACEMENT_LEVEL_VALUE,
+                level.getLocalizedName())));
   }
 
 
   private void testLoggerWithExceptionWith() throws IOException {
-    String[] loggedMessage = getCapturedLog().split(System.lineSeparator());
-    String firstLine = loggedMessage[0];
-    assertThat("Checking log with exception > first line for exception message", firstLine, endsWith(exceptionMessage));
-    assertThat("Checking log with exception > Number of line count should be greater than 2", loggedMessage.length, greaterThan(2));
+    final String[] loggedMessage = getCapturedLog().split(System.lineSeparator());
+    final String firstLine = loggedMessage[0];
+    assertThat("Checking log with exception > first line for exception message", firstLine,
+        endsWith(exceptionMessage));
+    assertThat("Checking log with exception > Number of line count should be greater than 2",
+        loggedMessage.length, greaterThan(2));
+    //First line is the message
+    //Second line is the actual error message
+    //From third line the actual stack trace starts
     for (int i = 2; i < loggedMessage.length; i++) {
-      Assert.assertTrue("Checking log with exception > checking for existence of stacktrace [" + i + "] :", loggedMessage[i].matches(JLogTest.loggedMessageStackTraceRegex));
+      Assert.assertTrue(
+          "Checking log with exception > checking for existence of stacktrace [" + i + "] :",
+          loggedMessage[i].matches(JLogTest.loggedMessageStackTraceRegex));
     }
   }
 
   private String getCapturedLog() throws IOException {
     this.testHandler.flush();
-    return this.logHandlerBAOS.toString(TEXT_ENCODING_UTF_8).trim();
+    return this.logHandlerBAOS.toString(TEXT_ENCODING_UTF_8)
+                              .trim();
   }
 }
