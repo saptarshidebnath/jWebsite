@@ -41,12 +41,11 @@ public class UrlHandler extends HttpServlet {
   @Override
   public void doGet(final HttpServletRequest request, final HttpServletResponse response)
       throws ServletException, IOException {
-    // Set response content type
-    response.setContentType("text/html");
-
-    // Actual logic goes here.
-    response.getWriter()
-            .println("<h1>Default Servlet/h1>");
+    final String currentRequestUri = request.getRequestURI();
+    JLog.info("Requested for URI : " + currentRequestUri);
+    //
+    // If there are not URL defined. then its a news install with no data installed
+    //
   }
 
   /**
@@ -64,5 +63,6 @@ public class UrlHandler extends HttpServlet {
   @Override
   public void init() {
     JLog.info("Initiated !!");
+    JLog.info(System.getenv("DATABASE_URL"));
   }
 }

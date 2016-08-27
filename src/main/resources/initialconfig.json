@@ -1,0 +1,15 @@
+{
+  "config": [
+    {
+      "url": "/admin",
+      "id": "jwebsite-admin",
+      "meta": {
+        "description": "JWebsite Adminstrator Panel",
+        "author": "Saptarshi Debnath",
+        "charset": "UTF-8"
+      },
+      "title": "JWebsite Admin",
+      "source": "/WEB-INF/jsp/admin.jsp"
+    }
+  ]
+}

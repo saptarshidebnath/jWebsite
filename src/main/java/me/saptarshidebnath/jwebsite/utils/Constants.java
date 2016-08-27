@@ -1,5 +1,8 @@
 package me.saptarshidebnath.jwebsite.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 /**
  Constant class contains all the constants that will be used by other classes.
  */
@@ -21,4 +24,16 @@ public class Constants {
    */
   public static final String TEXT_ENCODING_UTF_8 = "UTF-8";
 
+  /**
+   {@link String} default config file for the website
+   */
+  public static final String DEFAULT_CONFIG_JSON =
+      "initialconfig.json";
+  /**
+   A static {@link Gson Gson} object with pretty printing enabled.
+   */
+  public static final Gson GSON = new GsonBuilder().setPrettyPrinting()
+                                                   .create();
+
+  public static final String URL_ADMIN = "/admin";
 }
