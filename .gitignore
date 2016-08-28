@@ -3,3 +3,4 @@ target/
 jwebsite.iml
 debug.log 
 .vagrant/
+.env

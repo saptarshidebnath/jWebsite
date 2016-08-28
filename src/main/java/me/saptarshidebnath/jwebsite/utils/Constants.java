@@ -35,5 +35,9 @@ public class Constants {
   public static final Gson GSON = new GsonBuilder().setPrettyPrinting()
                                                    .create();
 
-  public static final String URL_ADMIN = "/admin";
+
+  public static final String ENV_DATABASE_URL = "DATABASE_URL";
+
+  public static final String ENV_DATABASE_URL_HEROKU_TOEKNEIZER = ":@/";
+
 }

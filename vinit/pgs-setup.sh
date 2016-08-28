@@ -19,9 +19,9 @@ PG_VERSION=9.5
 # Changes below this line are probably not necessary
 ###########################################################
 print_db_usage () {
-  echo "Your PostgreSQL database has been setup and can be accessed on your local machine on the forwarded port (default: 15432)"
+  echo "Your PostgreSQL database has been setup and can be accessed on your local machine on the forwarded port (default: 5432)"
   echo "  Host: localhost"
-  echo "  Port: 15432"
+  echo "  Port: 5432"
   echo "  Database: $APP_DB_NAME"
   echo "  Username: $APP_DB_USER"
   echo "  Password: $APP_DB_PASS"
@@ -36,10 +36,10 @@ print_db_usage () {
   echo "  PGUSER=$APP_DB_USER PGPASSWORD=$APP_DB_PASS psql -h localhost $APP_DB_NAME"
   echo ""
   echo "Env variable for application development:"
-  echo "  DATABASE_URL=postgresql://$APP_DB_USER:$APP_DB_PASS@localhost:15432/$APP_DB_NAME"
+  echo "  $DB_URL"
   echo ""
   echo "Local command to access the database via psql:"
-  echo "  PGUSER=$APP_DB_USER PGPASSWORD=$APP_DB_PASS psql -h localhost -p 15432 $APP_DB_NAME"
+  echo "  PGUSER=$APP_DB_USER PGPASSWORD=$APP_DB_PASS psql -h localhost -p 5432 $APP_DB_NAME"
 }
 
 export DEBIAN_FRONTEND=noninteractive
@@ -103,8 +103,8 @@ date > "$PROVISIONED_ON"
 
 echo "Successfully created PostgreSQL dev virtual machine."
 echo ""
-
-echo "export DATABASE_URL=postgresql://$APP_DB_USER:$APP_DB_PASS@localhost:15432/$APP_DB_NAME" >> /etc/profile
+DB_URL="DATABASE_URL=postgres://$APP_DB_USER:$APP_DB_PASS@localhost:5432/$APP_DB_NAME"
+echo "export $DB_URL" >> /etc/profile
 sudo cat /etc/profile
 echo ""
 echo "Successfully set the environment variable $DATABASE_URL"

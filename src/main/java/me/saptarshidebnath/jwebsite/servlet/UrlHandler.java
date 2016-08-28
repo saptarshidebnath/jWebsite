@@ -1,9 +1,16 @@
 package me.saptarshidebnath.jwebsite.servlet;
 
+import static me.saptarshidebnath.jwebsite.utils.Constants.ENV_DATABASE_URL_HEROKU_TOEKNEIZER;
+
+import me.saptarshidebnath.jwebsite.utils.Utils;
 import me.saptarshidebnath.jwebsite.utils.jlog.JLog;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -63,6 +70,16 @@ public class UrlHandler extends HttpServlet {
   @Override
   public void init() {
     JLog.info("Initiated !!");
-    JLog.info(System.getenv("DATABASE_URL"));
+
+    EntityManagerFactory entityManagerFactory;
+
+    //entityManagerFactory = Persistence.createEntityManagerFactory("JPATest");
+    try {
+      entityManagerFactory = Persistence.createEntityManagerFactory("JPATest",
+          Utils.getHerokuPostgresDBDetails("postgresql", ENV_DATABASE_URL_HEROKU_TOEKNEIZER));
+    } catch (NoSuchAlgorithmException e) {
+      e.printStackTrace();
+    }
+
   }
 }

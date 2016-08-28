@@ -50,7 +50,7 @@ Vagrant.configure(2) do |config|
   #   # Customize the amount of memory on the VM:
   #   vb.memory = "4096"
   # end
-  
+
   # View the documentation for the provider you are using for more
   # information on available options.
 
@@ -72,9 +72,10 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: <<-SHELL
     sudo bash /vagrant/vinit/provision.sh
   SHELL
-  
- config.vm.network "forwarded_port", guest: 5000, host: 8080, protocol: "tcp"
- 
+
+ config.vm.network "forwarded_port", guest: 5000, host: 5000, protocol: "tcp"
+ config.vm.network "forwarded_port", guest: 15432, host: 15432, protocol: "tcp"
+
  config.vm.provider "virtualbox" do |v|
    v.memory = 5120
    v.cpus = 4
