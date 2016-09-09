@@ -8,7 +8,7 @@ sudo add-apt-repository ppa:webupd8team/java -y
 
 
 #####Install Jenkins###################################################################################
-#wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
+#wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.name | sudo apt-name add -
 #sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
 
 

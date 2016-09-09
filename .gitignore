@@ -1,6 +1,9 @@
 target/
 .idea
 jwebsite.iml
+jwebsite.ipr
 debug.log 
 .vagrant/
 .env
+jwebsite.iws 
+.ideaDataSources/ 

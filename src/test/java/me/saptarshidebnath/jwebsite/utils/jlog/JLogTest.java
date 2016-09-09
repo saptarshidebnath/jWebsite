@@ -1,12 +1,5 @@
 package me.saptarshidebnath.jwebsite.utils.jlog;
 
-import static me.saptarshidebnath.jwebsite.utils.Constants.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.hasItemInArray;
-import static org.hamcrest.core.StringEndsWith.endsWith;
-import static org.hamcrest.core.StringStartsWith.startsWith;
-
 import org.junit.Assert;
 
 import java.io.ByteArrayOutputStream;
@@ -18,9 +11,14 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.StreamHandler;
 
-/**
- *
- */
+import static me.saptarshidebnath.jwebsite.utils.Constants.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasItemInArray;
+import static org.hamcrest.core.StringEndsWith.endsWith;
+import static org.hamcrest.core.StringStartsWith.startsWith;
+
+/** */
 public class JLogTest {
   private static String testMessage = null;
   private static String loggedMessageRegexWihtoutException = null;
@@ -34,17 +32,19 @@ public class JLogTest {
   public static void setUp() throws Exception {
     Class.forName("me.saptarshidebnath.jwebsite.utils.jlog.JLog");
     JLogTest.testMessage = "Test Message " + new Date();
-    JLogTest.loggedMessageRegexWihtoutException = "^\\[\\s{1}" + REPLACEMENT_LEVEL_VALUE +
-                                                  "\\s{1}\\]\\s{1}-\\s{1}\\[\\s{1}([A-Z]{1}[a-z]{2}\\s{1}){2}[0-9]{2}\\s{1}([0-9]{2}:){2}[0-9]{2}\\s{1}[A-Z]{3}\\s{1}[0-9]{4}\\s{1}\\]\\s{1}-\\s\\[.*,\\s[0-9]+\\s\\]\\s>>\\s" +
-                                                  JLogTest.testMessage + "$";
+    JLogTest.loggedMessageRegexWihtoutException =
+        "^\\[\\s{1}"
+            + REPLACEMENT_LEVEL_VALUE
+            + "\\s{1}\\]\\s{1}-\\s{1}\\[\\s{1}([A-Z]{1}[a-z]{2}\\s{1}){2}[0-9]{2}\\s{1}([0-9]{2}:){2}[0-9]{2}\\s{1}[A-Z]{3}\\s{1}[0-9]{4}\\s{1}\\]\\s{1}-\\s\\[.*,\\s[0-9]+\\s\\]\\s>>\\s"
+            + JLogTest.testMessage
+            + "$";
     JLogTest.loggedMessageStackTraceRegex =
         "^\\s+at\\s{1}[a-zA-Z]+(\\.[a-zA-Z0-9\\-\\$]+)+\\(.*\\)$";
     JLogTest.exceptionMessage = "Test Message " + new Date();
   }
 
   @org.junit.AfterClass
-  public static void tearDown() {
-  }
+  public static void tearDown() {}
 
   @org.junit.Before
   public void beforeTest() throws UnsupportedEncodingException {
@@ -70,11 +70,12 @@ public class JLogTest {
   @org.junit.Test
   public void getHandlers() {
     final Handler[] handlersList = JLog.getHandlers();
-    assertThat("Checking the count of the handler attached to the log : ",
-        handlersList.length >= 1);
-    assertThat("Checking if our handler is attached to the logger or not : ", handlersList,
-        hasItemInArray(
-            this.testHandler));
+    assertThat(
+        "Checking the count of the handler attached to the log : ", handlersList.length >= 1);
+    assertThat(
+        "Checking if our handler is attached to the logger or not : ",
+        handlersList,
+        hasItemInArray(this.testHandler));
   }
 
   @org.junit.Test
@@ -134,30 +135,35 @@ public class JLogTest {
     this.testLoggerWithExceptionWith();
   }
 
-
   private void testLoggerWithoutExceptionWith(final Level level, final String testMessage)
       throws IOException {
     final String loggedMessage = getCapturedLog();
-//    System.out.println("Log received :-");
-//    System.out.println(loggedMessage);
-//    System.out.println();
+    //    System.out.println("Log received :-");
+    //    System.out.println(loggedMessage);
+    //    System.out.println();
     assertThat("Checking log without exception > log end : ", loggedMessage, endsWith(testMessage));
-    assertThat("Checking log without exception > start : ", loggedMessage,
+    assertThat(
+        "Checking log without exception > start : ",
+        loggedMessage,
         startsWith("[ " + level.getLocalizedName() + " ]"));
-    Assert.assertTrue("Checking log without exception > with regex to match the generic pattern : ",
+    Assert.assertTrue(
+        "Checking log without exception > with regex to match the generic pattern : ",
         loggedMessage.matches(
-            JLogTest.loggedMessageRegexWihtoutException.replaceAll(REPLACEMENT_LEVEL_VALUE,
-                level.getLocalizedName())));
+            JLogTest.loggedMessageRegexWihtoutException.replaceAll(
+                REPLACEMENT_LEVEL_VALUE, level.getLocalizedName())));
   }
-
 
   private void testLoggerWithExceptionWith() throws IOException {
     final String[] loggedMessage = getCapturedLog().split(System.lineSeparator());
     final String firstLine = loggedMessage[0];
-    assertThat("Checking log with exception > first line for exception message", firstLine,
+    assertThat(
+        "Checking log with exception > first line for exception message",
+        firstLine,
         endsWith(exceptionMessage));
-    assertThat("Checking log with exception > Number of line count should be greater than 2",
-        loggedMessage.length, greaterThan(2));
+    assertThat(
+        "Checking log with exception > Number of line count should be greater than 2",
+        loggedMessage.length,
+        greaterThan(2));
     //First line is the message
     //Second line is the actual error message
     //From third line the actual stack trace starts
@@ -170,7 +176,6 @@ public class JLogTest {
 
   private String getCapturedLog() throws IOException {
     this.testHandler.flush();
-    return this.logHandlerBAOS.toString(TEXT_ENCODING_UTF_8)
-                              .trim();
+    return this.logHandlerBAOS.toString(TEXT_ENCODING_UTF_8).trim();
   }
 }
