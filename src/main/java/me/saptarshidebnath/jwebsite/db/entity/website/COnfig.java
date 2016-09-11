@@ -17,14 +17,14 @@ import javax.persistence.TableGenerator;
 public class Config {
   @Id
   @TableGenerator(
-    name = "jwSequence",
-    table = "jwebsite_sequence",
+    name = "jwConfigSeq",
+    table = "jw_seq_config",
     pkColumnName = "key",
     valueColumnName = "value",
-    pkColumnValue = "jw_config_pk",
+    pkColumnValue = "config_pk",
     allocationSize = 1
   )
-  @GeneratedValue(strategy = GenerationType.TABLE, generator = "jwSequence")
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "jwConfigSeq")
   @Column(name = "id")
   private long id;
 

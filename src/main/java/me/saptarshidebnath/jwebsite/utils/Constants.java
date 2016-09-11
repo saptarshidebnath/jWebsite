@@ -28,4 +28,6 @@ public class Constants {
   public static final String ENV_DATABASE_URL = "DATABASE_URL";
 
   public static final String ENV_DATABASE_URL_HEROKU_TOEKNEIZER = ":@/";
+
+  public static final String JPA_DB_CONF_NAME = "JwDbConfiguration";
 }
