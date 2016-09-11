@@ -83,7 +83,7 @@ echo "host    all             all             all                     md5" >> "$
 # Explicitly set default client_encoding
 echo "client_encoding = utf8" >> "$PG_CONF"
 
-# Restart so that all new config is loaded:
+# Restart so that all new jwConfig is loaded:
 service postgresql restart
 
 cat << EOF | su - postgres -c psql

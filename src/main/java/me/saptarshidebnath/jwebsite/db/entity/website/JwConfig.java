@@ -14,7 +14,7 @@ import javax.persistence.TableGenerator;
 
 @Entity
 @Table(name = "jwebsite_config")
-public class Config {
+public class JwConfig {
   @Id
   @TableGenerator(
     name = "jwConfigSeq",
@@ -38,7 +38,7 @@ public class Config {
     return this.id;
   }
 
-  public Config setId(final long id) {
+  public JwConfig setId(final long id) {
     this.id = id;
     return this;
   }
@@ -47,7 +47,7 @@ public class Config {
     return this.configName;
   }
 
-  public Config setConfigName(final String configName) {
+  public JwConfig setConfigName(final String configName) {
     this.configName = configName;
     return this;
   }
@@ -56,7 +56,7 @@ public class Config {
     return this.configValue;
   }
 
-  public Config setConfigValue(final String configValue) {
+  public JwConfig setConfigValue(final String configValue) {
     this.configValue = configValue;
     return this;
   }
@@ -65,14 +65,14 @@ public class Config {
   public boolean equals(final Object o) {
     if (this == o) return true;
 
-    if (!(o instanceof Config)) return false;
+    if (!(o instanceof JwConfig)) return false;
 
-    final Config config = (Config) o;
+    final JwConfig jwConfig = (JwConfig) o;
 
     return new EqualsBuilder()
-        .append(getId(), config.getId())
-        .append(getConfigName(), config.getConfigName())
-        .append(getConfigValue(), config.getConfigValue())
+        .append(getId(), jwConfig.getId())
+        .append(getConfigName(), jwConfig.getConfigName())
+        .append(getConfigValue(), jwConfig.getConfigValue())
         .isEquals();
   }
 

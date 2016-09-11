@@ -2,7 +2,7 @@ package me.saptarshidebnath.jwebsite.servlet;
 
 import me.saptarshidebnath.jwebsite.db.JwDbEntityManager;
 import me.saptarshidebnath.jwebsite.db.entity.page.WebPage;
-import me.saptarshidebnath.jwebsite.db.entity.website.Config;
+import me.saptarshidebnath.jwebsite.db.entity.website.JwConfig;
 import me.saptarshidebnath.jwebsite.utils.jlog.JLog;
 
 import javax.servlet.ServletContextEvent;
@@ -21,7 +21,7 @@ public class JwebSiteBootLoader implements ServletContextListener {
   public void contextInitialized(final ServletContextEvent event) {
     JLog.info("Jwebsite instance booting up.");
 
-    final Config user = new Config();
+    final JwConfig user = new JwConfig();
     user.setConfigName("saptarshi" + System.currentTimeMillis());
     user.setConfigValue("debnath");
 
