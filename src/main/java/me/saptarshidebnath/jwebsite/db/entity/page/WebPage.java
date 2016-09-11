@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -16,12 +17,15 @@ public class WebPage {
   private long id;
 
   @Column(name = "uri", nullable = false)
+  @Lob
   private String uri;
 
   @Column(name = "title", nullable = false)
+  @Lob
   private String title;
 
   @Column(name = "jsp_file_name", nullable = false)
+  @Lob
   private String jspFileName;
 
   public long getId() {

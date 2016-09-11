@@ -1,19 +1,13 @@
 package me.saptarshidebnath.jwebsite.servlet;
 
-import me.saptarshidebnath.jwebsite.utils.Utils;
 import me.saptarshidebnath.jwebsite.utils.jlog.JLog;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-
-import static me.saptarshidebnath.jwebsite.utils.Constants.ENV_DATABASE_URL_HEROKU_TOEKNEIZER;
 
 /**
  * The Controller servlet for jWebsite. The Servlet handles all the {@link
@@ -61,17 +55,5 @@ public class UrlHandler extends HttpServlet {
   @Override
   public void init() {
     JLog.info("Initiated !!");
-
-    final EntityManagerFactory entityManagerFactory;
-
-    //entityManagerFactory = Persistence.createEntityManagerFactory("JPATest");
-    try {
-      entityManagerFactory =
-          Persistence.createEntityManagerFactory(
-              "JPATest",
-              Utils.getHerokuPostgresDBDetails("postgresql", ENV_DATABASE_URL_HEROKU_TOEKNEIZER));
-    } catch (final NoSuchAlgorithmException e) {
-      e.printStackTrace();
-    }
   }
 }

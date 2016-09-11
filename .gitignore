@@ -7,3 +7,5 @@ debug.log
 .env
 jwebsite.iws 
 .ideaDataSources/ 
+.ideaDataSources/
+jwebsite.iws
