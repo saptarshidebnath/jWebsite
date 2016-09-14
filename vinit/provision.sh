@@ -46,8 +46,8 @@ sudo wget -O- https://toolbelt.heroku.com/install.sh | sudo sh
 sudo echo 'PATH="/usr/local/heroku/bin:$PATH"' >> /etc/profile
 
 #####Setup Git###################################################################################
-git jwConfig --global user.email "saptarshi.devnath@gmail.com"
-git jwConfig --global user.name "Saptarshi Debnath"
+git config --global user.email "saptarshi.devnath@gmail.com"
+git config --global user.name "Saptarshi Debnath"
 
 
 ### Install and Setup Postgres ##################################################################

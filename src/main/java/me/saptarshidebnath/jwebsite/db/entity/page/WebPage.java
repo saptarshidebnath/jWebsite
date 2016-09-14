@@ -1,5 +1,6 @@
 package me.saptarshidebnath.jwebsite.db.entity.page;
 
+import me.saptarshidebnath.jwebsite.db.entity.page.metainfo.MetaInfoMapping;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -9,17 +10,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import java.util.List;
 
 @Entity
-@Table(name = "web_page")
+@Table(name = "web_page", schema = "jw")
 public class WebPage {
   @Id
   @TableGenerator(
     name = "jwWebPageSeq",
-    table = "jw_seq_web_page",
+    table = "web_page",
+    schema = "seq",
     pkColumnName = "key",
     valueColumnName = "value",
     pkColumnValue = "web_page_pk",
@@ -40,6 +45,10 @@ public class WebPage {
   @Column(name = "jsp_file_name", nullable = false)
   @Lob
   private String jspFileName;
+
+  @OneToMany
+  @JoinColumn(name = "meta_info_mapping", referencedColumnName = "id")
+  private List<MetaInfoMapping> metaInfoMappingList;
 
   public long getId() {
     return this.id;

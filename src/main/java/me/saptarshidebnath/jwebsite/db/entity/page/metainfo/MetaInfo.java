@@ -6,12 +6,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 
 @Entity
-@Table(name = "meta_info")
+@Table(name = "meta_info", schema = "jw")
 public class MetaInfo {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @TableGenerator(
+    name = "jwMetaInfoSeq",
+    table = "meta_info",
+    schema = "seq",
+    pkColumnName = "key",
+    valueColumnName = "value",
+    pkColumnValue = "meta_info_pk",
+    allocationSize = 1
+  )
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "jwMetaInfoSeq")
   @Column(name = "id", nullable = false)
   private long id;
 
