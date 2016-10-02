@@ -8,10 +8,15 @@ import me.saptarshidebnath.jwebsite.db.entity.website.JwConfig;
 import me.saptarshidebnath.jwebsite.utils.Cnst;
 import me.saptarshidebnath.jwebsite.utils.Utils;
 import me.saptarshidebnath.jwebsite.utils.jlog.JLog;
+import org.jinq.jpa.JinqJPAStreamProvider;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 
 @WebListener
@@ -46,7 +51,19 @@ public class JwebSiteBootLoader implements ServletContextListener {
                         .setCreateTime(new Date())));
 
     JwDbEntityManager.getInstance().persist(user, wp);
-
+    final JinqJPAStreamProvider streams =
+        new JinqJPAStreamProvider(JwDbEntityManager.getInstance().getEntityManagerFactory());
+    //
+    //
+    //
+    final File f = new File(event.getServletContext().getRealPath("/") + File.separator + "a.jsp");
+    try {
+      Files.write(
+          Paths.get(f.getAbsolutePath()),
+          ("<html><body><h1>" + new Date().toString() + "</h1></body></html>").getBytes());
+    } catch (final IOException e) {
+      e.printStackTrace();
+    }
     JLog.info("JWebsite boot loading complete.");
   }
 }
