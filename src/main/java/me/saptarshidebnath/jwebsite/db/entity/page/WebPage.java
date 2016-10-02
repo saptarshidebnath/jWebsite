@@ -1,10 +1,11 @@
 package me.saptarshidebnath.jwebsite.db.entity.page;
 
-import me.saptarshidebnath.jwebsite.db.entity.page.metainfo.MetaInfoMapping;
+import me.saptarshidebnath.jwebsite.db.entity.page.metainfo.MetaInfo;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,18 +14,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import java.util.List;
 
 @Entity
-@Table(name = "web_page", schema = "jw")
+@Table(name = "jw_web_page")
 public class WebPage {
   @Id
   @TableGenerator(
     name = "jwWebPageSeq",
-    table = "web_page",
-    schema = "seq",
+    table = "seq_web_page",
     pkColumnName = "key",
     valueColumnName = "value",
     pkColumnValue = "web_page_pk",
@@ -34,21 +35,26 @@ public class WebPage {
   @Column(name = "id", nullable = false)
   private long id;
 
-  @Column(name = "uri", nullable = false)
+  @Column(name = "url_path", nullable = false, unique = true)
   @Lob
-  private String uri;
+  private String urlPath;
 
   @Column(name = "title", nullable = false)
   @Lob
   private String title;
 
-  @Column(name = "jsp_file_name", nullable = false)
+  @Column(name = "jsp_file_name")
   @Lob
   private String jspFileName;
 
-  @OneToMany
-  @JoinColumn(name = "meta_info_mapping", referencedColumnName = "id")
-  private List<MetaInfoMapping> metaInfoMappingList;
+  @OneToMany(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "jw_html_content", referencedColumnName = "id")
+  @OrderBy("createTime DESC")
+  private List<HtmlContent> htmlContentList;
+
+  @OneToMany(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "jw_meta_info", referencedColumnName = "id")
+  private List<MetaInfo> metaInfoList;
 
   public long getId() {
     return this.id;
@@ -59,48 +65,30 @@ public class WebPage {
     return this;
   }
 
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this)
-        .append("id", this.id)
-        .append("uri", this.uri)
-        .append("title", this.title)
-        .append("jspFileName", this.jspFileName)
-        .toString();
+  public List<HtmlContent> getHtmlContentList() {
+    return this.htmlContentList;
   }
 
-  @Override
-  public boolean equals(final Object o) {
-    if (this == o) return true;
-
-    if (!(o instanceof WebPage)) return false;
-
-    final WebPage webPage = (WebPage) o;
-
-    return new EqualsBuilder()
-        .append(getId(), webPage.getId())
-        .append(getUri(), webPage.getUri())
-        .append(getTitle(), webPage.getTitle())
-        .append(getJspFileName(), webPage.getJspFileName())
-        .isEquals();
+  public WebPage setHtmlContentList(final List<HtmlContent> htmlContentList) {
+    this.htmlContentList = htmlContentList;
+    return this;
   }
 
-  @Override
-  public int hashCode() {
-    return new HashCodeBuilder(17, 37)
-        .append(getId())
-        .append(getUri())
-        .append(getTitle())
-        .append(getJspFileName())
-        .toHashCode();
+  public List<MetaInfo> getMetaInfoList() {
+    return this.metaInfoList;
   }
 
-  public String getUri() {
-    return this.uri;
+  public WebPage setMetaInfoList(final List<MetaInfo> metaInfoList) {
+    this.metaInfoList = metaInfoList;
+    return this;
   }
 
-  public WebPage setUri(final String uri) {
-    this.uri = uri;
+  public String getUrlPath() {
+    return this.urlPath;
+  }
+
+  public WebPage setUrlPath(final String urlPath) {
+    this.urlPath = urlPath;
     return this;
   }
 
@@ -120,5 +108,47 @@ public class WebPage {
   public WebPage setJspFileName(final String jspFileName) {
     this.jspFileName = jspFileName;
     return this;
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this)
+        .append("id", this.id)
+        .append("urlPath", this.urlPath)
+        .append("title", this.title)
+        .append("jspFileName", this.jspFileName)
+        .append("htmlContentList", this.htmlContentList)
+        .append("metaInfoList", this.metaInfoList)
+        .toString();
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) return true;
+
+    if (!(o instanceof WebPage)) return false;
+
+    final WebPage webPage = (WebPage) o;
+
+    return new EqualsBuilder()
+        .append(getId(), webPage.getId())
+        .append(getUrlPath(), webPage.getUrlPath())
+        .append(getTitle(), webPage.getTitle())
+        .append(getJspFileName(), webPage.getJspFileName())
+        .append(getHtmlContentList(), webPage.getHtmlContentList())
+        .append(getMetaInfoList(), webPage.getMetaInfoList())
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+        .append(getId())
+        .append(getUrlPath())
+        .append(getTitle())
+        .append(getJspFileName())
+        .append(getHtmlContentList())
+        .append(getMetaInfoList())
+        .toHashCode();
   }
 }

@@ -11,7 +11,9 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.StreamHandler;
 
-import static me.saptarshidebnath.jwebsite.utils.Constants.*;
+import static me.saptarshidebnath.jwebsite.utils.Cnst.DEFAULT_STACK_TRACE_CLASS_NAME_DEPTH;
+import static me.saptarshidebnath.jwebsite.utils.Cnst.REPLACEMENT_LEVEL_VALUE;
+import static me.saptarshidebnath.jwebsite.utils.Cnst.TEXT_ENCODING_UTF_8;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasItemInArray;

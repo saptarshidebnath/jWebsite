@@ -6,14 +6,24 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import static me.saptarshidebnath.jwebsite.utils.Constants.ENV_DATABASE_URL;
+import static me.saptarshidebnath.jwebsite.utils.Cnst.ENV_DATABASE_URL;
 
 /** Created by Saptarshi on 8/27/2016. */
 public class Utils {
+
+  public static <T> ArrayList<T> getAsArrayList(final T... array) {
+    final int arrayLength = array.length;
+    final ArrayList<T> list = new ArrayList<>(arrayLength);
+    for (int i = 0; i < arrayLength; i++) {
+      list.add(i, array[i]);
+    }
+    return list;
+  }
 
   public static Map<String, String> getHerokuPostgresDBDetails(
       final String vendorName, final String tokenizer) throws NoSuchAlgorithmException {

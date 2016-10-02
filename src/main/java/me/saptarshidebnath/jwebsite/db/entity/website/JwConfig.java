@@ -13,13 +13,12 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
 @Entity
-@Table(name = "config", schema = "jw")
+@Table(name = "jw_config")
 public class JwConfig {
   @Id
   @TableGenerator(
     name = "jwConfigSeq",
-    table = "config",
-    schema = "seq",
+    table = "seq_config",
     pkColumnName = "key",
     valueColumnName = "value",
     pkColumnValue = "config_pk",

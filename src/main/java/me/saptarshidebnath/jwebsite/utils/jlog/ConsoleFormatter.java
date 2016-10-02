@@ -1,12 +1,14 @@
 package me.saptarshidebnath.jwebsite.utils.jlog;
 
+import me.saptarshidebnath.jwebsite.utils.Cnst;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
-import static me.saptarshidebnath.jwebsite.utils.Constants.DEFAULT_STACK_TRACE_CLASS_NAME_DEPTH;
+import static me.saptarshidebnath.jwebsite.utils.Cnst.DEFAULT_STACK_TRACE_CLASS_NAME_DEPTH;
 
 /**
  * This is default formatter which is used by the {@link
@@ -27,7 +29,7 @@ public class ConsoleFormatter extends Formatter {
 
   /**
    * The default constructor sets Stack trace look up depth as {@link
-   * me.saptarshidebnath.jwebsite.utils.Constants#DEFAULT_STACK_TRACE_CLASS_NAME_DEPTH }
+   * Cnst#DEFAULT_STACK_TRACE_CLASS_NAME_DEPTH }
    */
   public ConsoleFormatter() {
     super();

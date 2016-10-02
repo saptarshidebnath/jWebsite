@@ -3,7 +3,6 @@ package me.saptarshidebnath.jwebsite.servlet;
 import me.saptarshidebnath.jwebsite.utils.jlog.JLog;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +13,7 @@ import java.io.IOException;
  * javax.servlet.http.HttpServletRequest HttpServletRequest} and redirects all the users to the
  * correct handlers.
  */
-@WebServlet(value = "/*", name = "URL handler servlet")
+//@WebServlet(value = "/*", name = "URL handler servlet")
 public class UrlHandler extends HttpServlet {
 
   /**

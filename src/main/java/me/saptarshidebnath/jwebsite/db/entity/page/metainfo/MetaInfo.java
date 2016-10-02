@@ -1,5 +1,9 @@
 package me.saptarshidebnath.jwebsite.db.entity.page.metainfo;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,13 +13,12 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
 @Entity
-@Table(name = "meta_info", schema = "jw")
+@Table(name = "jw_meta_info")
 public class MetaInfo {
   @Id
   @TableGenerator(
     name = "jwMetaInfoSeq",
-    table = "meta_info",
-    schema = "seq",
+    table = "seq_meta_info",
     pkColumnName = "key",
     valueColumnName = "value",
     pkColumnValue = "meta_info_pk",
@@ -24,12 +27,34 @@ public class MetaInfo {
   @GeneratedValue(strategy = GenerationType.TABLE, generator = "jwMetaInfoSeq")
   @Column(name = "id", nullable = false)
   private long id;
-
   @Column(name = "name", nullable = false)
   private String name;
-
   @Column(name = "content", nullable = false)
   private String content;
+
+  @Override public String toString() {
+    return new ToStringBuilder(this).append("id", id).append("name", name)
+        .append("content", content).toString();
+  }
+
+  @Override public boolean equals(Object o) {
+    if (this == o)
+      return true;
+
+    if (!(o instanceof MetaInfo))
+      return false;
+
+    MetaInfo metaInfo = (MetaInfo) o;
+
+    return new EqualsBuilder().append(getId(), metaInfo.getId())
+        .append(getName(), metaInfo.getName()).append(getContent(), metaInfo.getContent())
+        .isEquals();
+  }
+
+  @Override public int hashCode() {
+    return new HashCodeBuilder(17, 37).append(getId()).append(getName()).append(getContent())
+        .toHashCode();
+  }
 
   public long getId() {
     return this.id;

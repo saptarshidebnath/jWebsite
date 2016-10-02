@@ -5,6 +5,7 @@
     <persistence-unit name="JwDbConfiguration" transaction-type="RESOURCE_LOCAL">
         <class>me.saptarshidebnath.jwebsite.db.entity.page.metainfo.MetaInfo</class>
         <class>me.saptarshidebnath.jwebsite.db.entity.page.metainfo.MetaInfoMapping</class>
+        <class>me.saptarshidebnath.jwebsite.db.entity.page.HtmlContent</class>
         <class>me.saptarshidebnath.jwebsite.db.entity.page.WebPage</class>
         <class>me.saptarshidebnath.jwebsite.db.entity.website.JwConfig</class>
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
