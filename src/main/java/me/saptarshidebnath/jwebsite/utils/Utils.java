@@ -2,19 +2,30 @@ package me.saptarshidebnath.jwebsite.utils;
 
 import me.saptarshidebnath.jwebsite.utils.jlog.JLog;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static me.saptarshidebnath.jwebsite.utils.Cnst.ENV_DATABASE_URL;
 
 /** Created by Saptarshi on 8/27/2016. */
 public class Utils {
+
+  public static void writeFile(final File fileToWrite, final String contentToWrite)
+      throws IOException {
+    Files.write(Paths.get(fileToWrite.getAbsolutePath()), contentToWrite.getBytes());
+  }
 
   public static <T> ArrayList<T> getAsArrayList(final T... array) {
     final int arrayLength = array.length;
@@ -23,6 +34,17 @@ public class Utils {
       list.add(i, array[i]);
     }
     return list;
+  }
+
+  public static <T> Collector<T, ?, T> singletonCollector() {
+    return Collectors.collectingAndThen(
+        Collectors.toList(),
+        list -> {
+          if (list.size() != 1) {
+            throw new IllegalStateException();
+          }
+          return list.get(0);
+        });
   }
 
   public static Map<String, String> getHerokuPostgresDBDetails(
