@@ -3,9 +3,11 @@ package me.saptarshidebnath.jwebsite.db;
 import me.saptarshidebnath.jwebsite.utils.Utils;
 import me.saptarshidebnath.jwebsite.utils.jlog.JLog;
 import org.jinq.jpa.JinqJPAStreamProvider;
+import org.jinq.orm.stream.JinqStream;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -27,7 +29,7 @@ public class JwDbEntityManager {
           Persistence.createEntityManagerFactory(
               JPA_DB_CONF_NAME,
               Utils.getHerokuPostgresDBDetails("postgresql", ENV_DATABASE_URL_HEROKU_TOEKNEIZER));
-      this.streams = new JinqJPAStreamProvider(this.getEntityManagerFactory());
+      this.streams = new JinqJPAStreamProvider(this.entityManagerFactory);
     } catch (final NoSuchAlgorithmException e) {
       JLog.severe("Unable to create Database", e);
       JLog.severe("Exiting application");
@@ -54,18 +56,27 @@ public class JwDbEntityManager {
   }
 
   public void persist(final Object... entities) {
-    final EntityManager em = this.entityManagerFactory.createEntityManager();
-    em.getTransaction().begin();
+    final EntityManager em = this.getEntityManager();
+    final EntityTransaction transaction = em.getTransaction();
+    transaction.begin();
     Arrays.stream(entities).forEach(em::persist);
-    em.getTransaction().commit();
+    transaction.commit();
     em.close();
   }
 
-  public EntityManagerFactory getEntityManagerFactory() {
-    return this.entityManagerFactory;
+  public <T> JinqStream<T> streamData(final Class<T> clazz) {
+    return this.streams.streamAll(this.getEntityManager(), clazz);
   }
 
-  public JinqJPAStreamProvider getStreams() {
-    return this.streams;
+  private EntityManager getEntityManager() {
+    return this.entityManagerFactory.createEntityManager();
+  }
+
+  public void merge(final Object... entities) {
+    final EntityManager em = this.getEntityManager();
+    em.getTransaction().begin();
+    Arrays.stream(entities).forEach(em::merge);
+    em.getTransaction().commit();
+    em.close();
   }
 }

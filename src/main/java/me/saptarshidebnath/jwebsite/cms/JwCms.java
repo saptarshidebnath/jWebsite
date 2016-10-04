@@ -2,15 +2,14 @@ package me.saptarshidebnath.jwebsite.cms;
 
 import me.saptarshidebnath.jwebsite.db.JwDbEntityManager;
 import me.saptarshidebnath.jwebsite.db.entity.page.HtmlContent;
+import me.saptarshidebnath.jwebsite.db.entity.page.MetaInfo;
 import me.saptarshidebnath.jwebsite.db.entity.page.WebPage;
-import me.saptarshidebnath.jwebsite.db.entity.page.metainfo.MetaInfo;
 import me.saptarshidebnath.jwebsite.db.entity.website.JwConfig;
 import me.saptarshidebnath.jwebsite.utils.Cnst;
 import me.saptarshidebnath.jwebsite.utils.Utils;
 import me.saptarshidebnath.jwebsite.utils.jlog.JLog;
 import org.apache.commons.io.FilenameUtils;
 
-import javax.persistence.EntityManager;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,37 +67,26 @@ public class JwCms {
   public String getJspDumpLocation() {
 
     return JwDbEntityManager.getInstance()
-            .getStreams()
-            .streamAll(
-                JwDbEntityManager.getInstance().getEntityManagerFactory().createEntityManager(),
-                JwConfig.class)
+            .streamData(JwConfig.class)
             .filter(
                 e -> e.getConfigName().equalsIgnoreCase(Cnst.DB_CONFIG_KEY_WEB_APP_ROOT_REAL_PATH))
             .collect(singletonCollector())
             .getConfigValue()
         + File.separator
         + JwDbEntityManager.getInstance()
-            .getStreams()
-            .streamAll(
-                JwDbEntityManager.getInstance().getEntityManagerFactory().createEntityManager(),
-                JwConfig.class)
+            .streamData(JwConfig.class)
             .filter(e -> e.getConfigName().equalsIgnoreCase(Cnst.DB_CONFIG_KEY_JSP_LOCATION))
             .collect(singletonCollector())
             .getConfigValue();
   }
 
-  public void createJspPage(final String urlPath) throws IOException {
-    final EntityManager entityManager =
-        JwDbEntityManager.getInstance().getEntityManagerFactory().createEntityManager();
+  public void publishJsp(final String urlPath) throws IOException {
     final WebPage webPage =
         JwDbEntityManager.getInstance()
-            .getStreams()
-            .streamAll(entityManager, WebPage.class)
+            .streamData(WebPage.class)
             .filter(e -> e.getUrlPath().equalsIgnoreCase(urlPath))
             .collect(singletonCollector());
-
     JLog.info(webPage.toString());
-
     if (webPage.getJspFileName() == null || webPage.getJspFileName().length() == 0) {
       final File fileDirectory = new File(this.getJspDumpLocation());
       fileDirectory.mkdirs();
@@ -110,15 +98,11 @@ public class JwCms {
         Utils.writeFile(temporaryJspFile, htmlContent);
         JLog.info("Created JSP file : " + temporaryJspFile.getCanonicalPath());
         webPage.setJspFileName(FilenameUtils.getName(temporaryJspFile.getCanonicalPath()));
-        JwDbEntityManager.getInstance()
-            .getEntityManagerFactory()
-            .createEntityManager()
-            .merge(webPage);
+        JwDbEntityManager.getInstance().merge(webPage);
       } else {
         throw new IOException("Unable to create directory : " + fileDirectory.getCanonicalPath());
       }
     }
-    entityManager.close();
   }
 
   public void initateJwCms(final String realPath) throws IOException {
@@ -163,7 +147,7 @@ public class JwCms {
         final List<String> urlList =
             this.webPages.stream().map(e -> e.getUrlPath()).collect(Collectors.toList());
         for (final String url : urlList) {
-          this.createJspPage(url);
+          this.publishJsp(url);
         }
       }
     }

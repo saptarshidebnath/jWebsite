@@ -1,6 +1,5 @@
 package me.saptarshidebnath.jwebsite.db.entity.page;
 
-import me.saptarshidebnath.jwebsite.db.entity.page.metainfo.MetaInfo;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -51,12 +50,12 @@ public class WebPage {
   @Lob
   private String jspFileName;
 
-  @OneToMany(cascade = CascadeType.PERSIST)
+  @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "jw_html_content", referencedColumnName = "id")
   @OrderBy("createTime DESC")
   private List<HtmlContent> htmlContentList;
 
-  @OneToMany(cascade = CascadeType.PERSIST)
+  @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "jw_meta_info", referencedColumnName = "id")
   private List<MetaInfo> metaInfoList;
 

@@ -1,4 +1,4 @@
-package me.saptarshidebnath.jwebsite.db.entity.page.metainfo;
+package me.saptarshidebnath.jwebsite.db.entity.page;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -27,32 +27,43 @@ public class MetaInfo {
   @GeneratedValue(strategy = GenerationType.TABLE, generator = "jwMetaInfoSeq")
   @Column(name = "id", nullable = false)
   private long id;
+
   @Column(name = "name", nullable = false)
   private String name;
+
   @Column(name = "content", nullable = false)
   private String content;
 
-  @Override public String toString() {
-    return new ToStringBuilder(this).append("id", id).append("name", name)
-        .append("content", content).toString();
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this)
+        .append("id", this.id)
+        .append("name", this.name)
+        .append("content", this.content)
+        .toString();
   }
 
-  @Override public boolean equals(Object o) {
-    if (this == o)
-      return true;
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) return true;
 
-    if (!(o instanceof MetaInfo))
-      return false;
+    if (!(o instanceof MetaInfo)) return false;
 
-    MetaInfo metaInfo = (MetaInfo) o;
+    final MetaInfo metaInfo = (MetaInfo) o;
 
-    return new EqualsBuilder().append(getId(), metaInfo.getId())
-        .append(getName(), metaInfo.getName()).append(getContent(), metaInfo.getContent())
+    return new EqualsBuilder()
+        .append(getId(), metaInfo.getId())
+        .append(getName(), metaInfo.getName())
+        .append(getContent(), metaInfo.getContent())
         .isEquals();
   }
 
-  @Override public int hashCode() {
-    return new HashCodeBuilder(17, 37).append(getId()).append(getName()).append(getContent())
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+        .append(getId())
+        .append(getName())
+        .append(getContent())
         .toHashCode();
   }
 
