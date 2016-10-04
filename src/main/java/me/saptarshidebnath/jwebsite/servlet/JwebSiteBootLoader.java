@@ -21,7 +21,7 @@ public class JwebSiteBootLoader implements ServletContextListener {
     JLog.info("Jwebsite instance booting up.");
 
     try {
-      JwCms.getInstance().initateJwCms(event.getServletContext().getRealPath("/"));
+      JwCms.getInstance().initJwCms(event.getServletContext().getRealPath("/"));
     } catch (final IOException e) {
       JLog.severe("Error Received", e);
     }

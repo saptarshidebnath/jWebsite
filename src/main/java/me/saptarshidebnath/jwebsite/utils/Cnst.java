@@ -32,11 +32,16 @@ public class Cnst {
   public static final String ENV_DATABASE_URL_HEROKU_TOEKNEIZER = ":@/";
 
   public static final String JPA_DB_CONF_NAME = "JwDbConfiguration";
-  public static final String DB_CONFIG_KEY_WEB_APP_ROOT_REAL_PATH = "KEY_WEB_APP_ROOT_REAL_PATH";
+
   public static final String DB_CONFIG_KEY_JSP_LOCATION = "KEY_JSP_DUMP_LOCATION";
   public static final String DB_CONFIG_VALUE_JSP_LOCATION =
       "WEB-INF" + File.separator + "jw" + File.separator + "jsp";
 
   public static final String JW_JSP_PREFIX = "jwjsp";
   public static final String JW_JSP_EXTENSION = ".jsp";
+
+  public static final String WIC_KEY_ROOT_REAL_PATH = "KEY_WEB_APP_ROOT_REAL_PATH";
+  public static final String WIC_KEY_JSP_DUMP_PATH = "KEY_WEB_APP_ROOT_REAL_PATH";
+
+  public static final int CACHE_VALIDITY_TIME_MILLI = 1000 * 60 * 15;
 }
