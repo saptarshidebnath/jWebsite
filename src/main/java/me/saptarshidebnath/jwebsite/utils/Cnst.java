@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
+import java.util.Date;
 
 /** Constant class contains all the constants that will be used by other classes. */
 public class Cnst {
@@ -37,11 +38,23 @@ public class Cnst {
   public static final String DB_CONFIG_VALUE_JSP_LOCATION =
       "WEB-INF" + File.separator + "jw" + File.separator + "jsp";
 
-  public static final String JW_JSP_PREFIX = "jwjsp";
+  public static final String JW_JSP_PREFIX = "gen";
   public static final String JW_JSP_EXTENSION = ".jsp";
 
   public static final String WIC_KEY_ROOT_REAL_PATH = "KEY_WEB_APP_ROOT_REAL_PATH";
   public static final String WIC_KEY_JSP_DUMP_PATH = "KEY_WEB_APP_ROOT_REAL_PATH";
+  public static final String WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_NAME =
+      "WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_NAME";
+  public static final String WIC_VALUE_REQ_FORWARD_INDICATOR_ATTR_NAME =
+      "req-forwarded-" + new Date().toString();
+
+  public static final String WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_VALUE =
+      "WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_VALUE";
+  public static final String WIC_VALUE_REQ_FORWARD_INDICATOR_ATTR_VALUE =
+      "request-forwarded-value-true-" + new Date().toString();
 
   public static final int CACHE_VALIDITY_TIME_MILLI = 1000 * 60 * 15;
+  public static final int CACHE_VALIDITY_TIME_NOT_STARTED = -1;
+
+  public static final String DB_WEBPAGE_ADMIN_PG_UI = "/jwebsite/admin.html";
 }

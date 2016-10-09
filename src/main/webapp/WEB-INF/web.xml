@@ -7,4 +7,12 @@
         <welcome-file>index.jsp</welcome-file>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+    <!--    <servlet>
+            <servlet-name>jw-url-handler</servlet-name>
+            <servlet-class>me.saptarshidebnath.jwebsite.servlet.UrlHandler</servlet-class>
+        </servlet>
+        <servlet-mapping>
+            <servlet-name>jw-url-handler</servlet-name>
+            <url-pattern>/*</url-pattern>
+        </servlet-mapping>-->
 </web-app>

@@ -20,7 +20,8 @@ public enum WebInstInfo {
     return returnValue;
   }
 
-  public void storeValue(final String value, final String forKey) {
+  public void storeValue(final String forKey, final String value) {
+    JLog.info(forKey + " : " + value);
     //
     // Check if key exists or not in a synchronized fashion
     //
@@ -36,7 +37,6 @@ public enum WebInstInfo {
                 + currentValue
                 + "\" will be replaced with the new "
                 + "value \""
-                + value
                 + "\"");
       }
       this.cache.put(forKey, value);

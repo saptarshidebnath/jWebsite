@@ -13,23 +13,29 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static me.saptarshidebnath.jwebsite.utils.Cnst.DB_WEBPAGE_ADMIN_PG_UI;
 import static me.saptarshidebnath.jwebsite.utils.Cnst.JW_JSP_EXTENSION;
 import static me.saptarshidebnath.jwebsite.utils.Cnst.JW_JSP_PREFIX;
 import static me.saptarshidebnath.jwebsite.utils.Cnst.WIC_KEY_JSP_DUMP_PATH;
+import static me.saptarshidebnath.jwebsite.utils.Cnst.WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_NAME;
+import static me.saptarshidebnath.jwebsite.utils.Cnst.WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_VALUE;
 import static me.saptarshidebnath.jwebsite.utils.Cnst.WIC_KEY_ROOT_REAL_PATH;
+import static me.saptarshidebnath.jwebsite.utils.Cnst.WIC_VALUE_REQ_FORWARD_INDICATOR_ATTR_NAME;
+import static me.saptarshidebnath.jwebsite.utils.Cnst.WIC_VALUE_REQ_FORWARD_INDICATOR_ATTR_VALUE;
 import static me.saptarshidebnath.jwebsite.utils.Utils.singletonCollector;
 
 public class JwCms {
   private static JwCms instance;
   private long lastWebPageListingTime;
   /**
-   * This is the current web pages cache. Please use {@link JwCms#getAllWebPages(boolean)} to get
-   * the current web page cache
+   * This is the current web pages cache. Please use {@link JwCms#getAllWebPages} to get the current
+   * web page cache
    */
   private List<WebPage> currentWebPageCache;
 
@@ -66,7 +72,7 @@ public class JwCms {
         throw new IOException(message);
       }
     }
-    final List<WebPage> webPageList = this.getAllWebPages(false);
+    final List<WebPage> webPageList = this.getAllWebPages();
     //
     // Create webpages one by one
     //
@@ -125,7 +131,8 @@ public class JwCms {
     }
   }
 
-  public void initJwCms(final String realPath) throws IOException {
+  public void initJwCms(final String realPath) throws IOException, NoSuchAlgorithmException {
+    JLog.info("JwCMS Initiating..");
     //
     // The order is important
     //
@@ -146,7 +153,9 @@ public class JwCms {
     this.publishAllWebPages();
   }
 
-  private void createWICEntries(final String realPath) throws IOException {
+  private void createWICEntries(final String realPath)
+      throws IOException, NoSuchAlgorithmException {
+    JLog.info("Creating Web Instance Cache");
     //
     // Store the web app root real path
     //
@@ -157,14 +166,23 @@ public class JwCms {
     //
 
     final String jspDumpLocation =
-        JwDbEntityManager.getInstance()
-            .streamData(JwConfig.class)
-            .filter(e -> e.getConfigName().equalsIgnoreCase(Cnst.DB_CONFIG_KEY_JSP_LOCATION))
-            .collect(singletonCollector())
-            .getConfigValue();
+        realPath
+            + File.separator
+            + JwDbEntityManager.getInstance()
+                .streamData(JwConfig.class)
+                .filter(e -> e.getConfigName().equalsIgnoreCase(Cnst.DB_CONFIG_KEY_JSP_LOCATION))
+                .collect(singletonCollector())
+                .getConfigValue();
 
-    WebInstInfo.INST.storeValue(WIC_KEY_JSP_DUMP_PATH, realPath + File.separator + jspDumpLocation);
+    WebInstInfo.INST.storeValue(WIC_KEY_JSP_DUMP_PATH, jspDumpLocation);
 
+    WebInstInfo.INST.storeValue(
+        WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_NAME,
+        Utils.digestStringAsMd5(WIC_VALUE_REQ_FORWARD_INDICATOR_ATTR_NAME));
+
+    WebInstInfo.INST.storeValue(
+        WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_VALUE,
+        Utils.digestStringAsMd5(WIC_VALUE_REQ_FORWARD_INDICATOR_ATTR_VALUE));
     JLog.info("Web Instance cache creation compete");
   }
 
@@ -188,7 +206,7 @@ public class JwCms {
         Utils.getAsArrayList(
             new WebPage()
                 .setTitle("Admin Page")
-                .setUrlPath("/jwebsite/admin")
+                .setUrlPath(DB_WEBPAGE_ADMIN_PG_UI)
                 .setMetaInfoList(
                     Utils.getAsArrayList(
                         new MetaInfo().setName("foo1").setContent("bar1"),
@@ -196,7 +214,10 @@ public class JwCms {
                 .setHtmlContentList(
                     Utils.getAsArrayList(
                         new HtmlContent()
-                            .setHtmlContent("<html><body><h1>Admin Page</h1></body></html>")
+                            .setHtmlContent(
+                                "<html><body><h1>Admin "
+                                    + "Page</h1><p>Today is <%=new java.util.Date().toString()%>"
+                                    + "</p></body></html>")
                             .setCreateTime(new Date())))));
     //
     // Persist the entities
@@ -205,36 +226,22 @@ public class JwCms {
     JLog.info("Data base pre population complete");
   }
 
-  public List<WebPage> getAllWebPages(final boolean lightWeightResponse) {
+  public List<WebPage> getAllWebPages() {
     //
     // Collect all the webPages in the database as of now
     //
     final long currentTimeMillis = System.currentTimeMillis();
-    if (this.lastWebPageListingTime > 0
-        && (currentTimeMillis - this.lastWebPageListingTime) > Cnst.CACHE_VALIDITY_TIME_MILLI) {
+    if (this.lastWebPageListingTime == Cnst.CACHE_VALIDITY_TIME_NOT_STARTED
+        || (currentTimeMillis - this.lastWebPageListingTime) > Cnst.CACHE_VALIDITY_TIME_MILLI) {
       this.currentWebPageCache =
           JwDbEntityManager.getInstance().streamData(WebPage.class).collect(Collectors.toList());
-      this.lightWeightWebPageUniverse =
-          this.currentWebPageCache
-              .parallelStream()
-              .map(WebPage::lightWeightClone)
-              .collect(Collectors.toList());
+      JLog.info("WebPage Cache : ");
+      this.currentWebPageCache.forEach(e -> JLog.info(e.toString()));
       this.lastWebPageListingTime = System.currentTimeMillis();
     }
 
-    List<WebPage> returnValue = null;
+    final List<WebPage> returnValue = this.currentWebPageCache;
 
-    //
-    // Create light weight response if requested;
-    //
-    if (lightWeightResponse) {
-      returnValue = this.lightWeightWebPageUniverse.stream().collect(Collectors.toList());
-    } else {
-      returnValue = this.currentWebPageCache.stream().collect(Collectors.toList());
-    }
-    //
-    // Return a copy of the list
-    //
     return returnValue;
   }
 }

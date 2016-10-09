@@ -6,10 +6,9 @@ import me.saptarshidebnath.jwebsite.utils.jlog.JLog;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import java.io.IOException;
 
 @WebListener
-public class JwebSiteBootLoader implements ServletContextListener {
+public class JwBootLoader implements ServletContextListener {
 
   @Override
   public void contextDestroyed(final ServletContextEvent event) {
@@ -22,7 +21,7 @@ public class JwebSiteBootLoader implements ServletContextListener {
 
     try {
       JwCms.getInstance().initJwCms(event.getServletContext().getRealPath("/"));
-    } catch (final IOException e) {
+    } catch (final Exception e) {
       JLog.severe("Error Received", e);
     }
 

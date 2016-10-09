@@ -1,6 +1,5 @@
 package me.saptarshidebnath.jwebsite.db.entity.page;
 
-import me.saptarshidebnath.jwebsite.utils.Utils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -19,7 +18,6 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(
@@ -155,17 +153,5 @@ public class WebPage {
         .append(getHtmlContentList())
         .append(getMetaInfoList())
         .toHashCode();
-  }
-
-  public WebPage lightWeightClone() {
-
-    return new WebPage()
-        .setId(this.getId())
-        .setJspFileName(this.getJspFileName())
-        .setMetaInfoList(this.getMetaInfoList().stream().collect(Collectors.toList()))
-        .setTitle(this.getTitle())
-        .setUrlPath(this.getUrlPath())
-        .setHtmlContentList(
-            Utils.getAsArrayList(this.getHtmlContentList().stream().findFirst().get()));
   }
 }

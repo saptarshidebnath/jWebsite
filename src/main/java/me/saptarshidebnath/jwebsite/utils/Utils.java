@@ -2,6 +2,7 @@ package me.saptarshidebnath.jwebsite.utils;
 
 import me.saptarshidebnath.jwebsite.utils.jlog.JLog;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -41,15 +42,34 @@ public class Utils {
         Collectors.toList(),
         list -> {
           if (list.size() != 1) {
-            throw new IllegalStateException();
+            throw new IllegalStateException(
+                "List size is : " + list.size() + ". Ideally it " + "should be 1");
           }
           return list.get(0);
         });
   }
 
+  public static String digestStringAsMd5(final String clearText) throws NoSuchAlgorithmException {
+    final MessageDigest md5 = MessageDigest.getInstance("MD5");
+    md5.update(StandardCharsets.UTF_8.encode(clearText));
+    return String.format("%032x", new BigInteger(1, md5.digest()));
+  }
+
+  public static boolean doRequestContainsAttribute(
+      final HttpServletRequest request, final String attributeName) {
+    return request.getAttribute(attributeName) == null ? false : true;
+  }
+
+  public static HttpServletRequest setAttribute(
+      final HttpServletRequest request, final String attributeName, final Object value) {
+    request.setAttribute(attributeName, value);
+    return request;
+  }
+
   public static Map<String, String> getHerokuPostgresDBDetails(
       final String vendorName, final String tokenizer) throws NoSuchAlgorithmException {
     final String databaseUrl = System.getenv(ENV_DATABASE_URL);
+    //    final String databaseUrl = "postgres://vagrant:vagrant@localhost:5432/vagrant";
     final StringTokenizer st = new StringTokenizer(databaseUrl, tokenizer);
     final String dbVendor = st.nextToken(); //if DATABASE_URL is set
     final String userName = st.nextToken();
@@ -63,11 +83,8 @@ public class Utils {
     JLog.info("Reconstructed JDBC URL : " + jdbcUrl);
     JLog.info("Environment provided vendor : " + dbVendor);
     JLog.info("Environment provided userName : " + userName);
-    final MessageDigest md5 = MessageDigest.getInstance("MD5");
-    md5.update(StandardCharsets.UTF_8.encode(password));
-    JLog.info(
-        "Environment provided password [MD5 hashed] : "
-            + String.format("%032x", new BigInteger(1, md5.digest())));
+
+    JLog.info("Environment provided password [MD5 hashed] : " + digestStringAsMd5(password));
     JLog.info("Environment provided host name : " + host);
     JLog.info("Environment provided port Number : " + port);
     JLog.info("Environment provided data base name : " + databaseName);
