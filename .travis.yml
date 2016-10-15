@@ -9,7 +9,7 @@ before_install:
 
 install:
   # install without any testing
-  - mvn install -U -Dmaven.test.skip=true -B -V -q -T4 -C
+  - mvn install -U -Dmaven.test.skip=false -B -V -q -T 2C -C
 
 script:
   # execute unit and integration tests
