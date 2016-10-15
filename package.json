@@ -1,16 +1,22 @@
 {
-  "name": "jWebsite",
-  "version": "0.0.1",
-  "description": "CMS based on Java",
+  "name": "",
+  "version": "1.0.0",
+  "description": "",
   "scripts": {
-    "gwatch": "node -e \"require('grunt').tasks([gwatch]);\"",
-    "compile": "node -e \"require('grunt').tasks([compile]);\""
+    "gwatch": "node -e \"require('grunt').tasks(['gwatch']);\"",
+    "compile": "node -e \"require('grunt').tasks(['compile']);\""
   },
-  "dependencies": {
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "devDependencies": {
     "compass-importer": "^0.4.1",
-    "google-closure-compiler": "^20160911.0.0",
+    "google-closure-compiler": "^20160713.1.0",
     "grunt": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-sass": "^1.2.1"
-  }
+    "grunt-sass": "^1.2.0"
+  },
+  "license": "SEE LICENSE IN README.MD"
+
 }
