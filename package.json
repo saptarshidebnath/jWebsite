@@ -1,0 +1,16 @@
+{
+  "name": "jWebsite",
+  "version": "0.0.1",
+  "description": "CMS based on Java",
+  "scripts": {
+    "gwatch": "node -e \"require('grunt').tasks([gwatch]);\"",
+    "compile": "node -e \"require('grunt').tasks([compile]);\""
+  },
+  "dependencies": {
+    "compass-importer": "^0.4.1",
+    "google-closure-compiler": "^20160911.0.0",
+    "grunt": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-sass": "^1.2.1"
+  }
+}

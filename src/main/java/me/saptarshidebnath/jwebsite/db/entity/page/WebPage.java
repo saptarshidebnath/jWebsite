@@ -2,7 +2,6 @@ package me.saptarshidebnath.jwebsite.db.entity.page;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -51,7 +50,7 @@ public class WebPage {
   private String jspFileName;
 
   @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "jw_html_content", referencedColumnName = "id")
+  @JoinColumn(name = "jw_web_page_id", referencedColumnName = "id")
   @OrderBy("createTime DESC")
   private List<HtmlContent> htmlContentList;
 
@@ -111,18 +110,6 @@ public class WebPage {
   public WebPage setJspFileName(final String jspFileName) {
     this.jspFileName = jspFileName;
     return this;
-  }
-
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this)
-        .append("id", this.id)
-        .append("urlPath", this.urlPath)
-        .append("title", this.title)
-        .append("jspFileName", this.jspFileName)
-        .append("htmlContentList", this.htmlContentList)
-        .append("metaInfoList", this.metaInfoList)
-        .toString();
   }
 
   @Override

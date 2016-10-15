@@ -3,10 +3,14 @@
              xmlns="http://xmlns.jcp.org/xml/ns/persistence"
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
     <persistence-unit name="JwDbConfiguration" transaction-type="RESOURCE_LOCAL">
+        <!-- Entities -->
         <class>me.saptarshidebnath.jwebsite.db.entity.page.MetaInfo</class>
         <class>me.saptarshidebnath.jwebsite.db.entity.page.HtmlContent</class>
         <class>me.saptarshidebnath.jwebsite.db.entity.page.WebPage</class>
         <class>me.saptarshidebnath.jwebsite.db.entity.website.JwConfig</class>
+
+        <!-- Converter -->
+        <class>me.saptarshidebnath.jwebsite.db.converter.PageContentStatusConverter</class>
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <properties>
             <property name="javax.persistence.schema-generation.database.action"

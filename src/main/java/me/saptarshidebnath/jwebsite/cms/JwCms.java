@@ -5,6 +5,7 @@ import me.saptarshidebnath.jwebsite.db.entity.page.HtmlContent;
 import me.saptarshidebnath.jwebsite.db.entity.page.MetaInfo;
 import me.saptarshidebnath.jwebsite.db.entity.page.WebPage;
 import me.saptarshidebnath.jwebsite.db.entity.website.JwConfig;
+import me.saptarshidebnath.jwebsite.db.status.PageContent;
 import me.saptarshidebnath.jwebsite.utils.Cnst;
 import me.saptarshidebnath.jwebsite.utils.Utils;
 import me.saptarshidebnath.jwebsite.utils.WebInstInfo;
@@ -121,11 +122,13 @@ public class JwCms {
       }
       final File temporaryJspFile =
           File.createTempFile(JW_JSP_PREFIX, JW_JSP_EXTENSION, fileDirectory);
-      final String htmlContent = webPage.getHtmlContentList().get(0).getHtmlContent();
+      final HtmlContent latestHtmlContent = webPage.getHtmlContentList().get(0);
+      final String htmlContent = latestHtmlContent.getHtmlContent();
       Utils.writeFile(temporaryJspFile, htmlContent);
+      latestHtmlContent.setStatus(PageContent.PUBLISHED);
       JLog.info("Created JSP file : " + temporaryJspFile.getCanonicalPath());
       webPage.setJspFileName(FilenameUtils.getName(temporaryJspFile.getCanonicalPath()));
-      JwDbEntityManager.getInstance().merge(webPage);
+      JwDbEntityManager.getInstance().merge(webPage, latestHtmlContent);
     } else {
       throw new IOException("Unable to create directory : " + fileDirectory.getCanonicalPath());
     }
@@ -214,6 +217,7 @@ public class JwCms {
                 .setHtmlContentList(
                     Utils.getAsArrayList(
                         new HtmlContent()
+                            .setStatus(PageContent.SAVED)
                             .setHtmlContent(
                                 "<html><body><h1>Admin "
                                     + "Page</h1><p>Today is <%=new java.util.Date().toString()%>"

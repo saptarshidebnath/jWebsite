@@ -2,10 +2,11 @@ target/
 .idea
 jwebsite.iml
 jwebsite.ipr
-debug.log 
+debug.log
 .vagrant/
 .env
-jwebsite.iws 
-.ideaDataSources/ 
+jwebsite.iws
+.ideaDataSources/
 .ideaDataSources/
 jwebsite.iws
+node_modules/

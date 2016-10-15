@@ -1,11 +1,14 @@
 package me.saptarshidebnath.jwebsite.db.entity.page;
 
+import me.saptarshidebnath.jwebsite.db.converter.PageContentStatusConverter;
+import me.saptarshidebnath.jwebsite.db.status.PageContent;
 import me.saptarshidebnath.jwebsite.utils.jlog.JLog;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -43,6 +46,11 @@ public class HtmlContent {
   @Lob
   private String htmlContent;
 
+  @Column(name = "status", nullable = false)
+  @Lob
+  @Convert(converter = PageContentStatusConverter.class)
+  private PageContent status;
+
   public Date getCreateTime() {
     return this.createTime;
   }
@@ -77,6 +85,16 @@ public class HtmlContent {
   }
 
   @Override
+  public String toString() {
+    return new ToStringBuilder(this)
+        .append("createTime", this.createTime)
+        .append("id", this.id)
+        .append("htmlContent", this.htmlContent)
+        .append("status", this.status)
+        .toString();
+  }
+
+  @Override
   public boolean equals(final Object o) {
     if (this == o) return true;
 
@@ -88,6 +106,7 @@ public class HtmlContent {
         .append(getId(), that.getId())
         .append(getCreateTime(), that.getCreateTime())
         .append(getHtmlContent(), that.getHtmlContent())
+        .append(getStatus(), that.getStatus())
         .isEquals();
   }
 
@@ -97,15 +116,16 @@ public class HtmlContent {
         .append(getCreateTime())
         .append(getId())
         .append(getHtmlContent())
+        .append(getStatus())
         .toHashCode();
   }
 
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this)
-        .append("createTime", this.createTime)
-        .append("id", this.id)
-        .append("htmlContent", this.htmlContent)
-        .toString();
+  public PageContent getStatus() {
+    return this.status;
+  }
+
+  public HtmlContent setStatus(final PageContent status) {
+    this.status = status;
+    return this;
   }
 }
