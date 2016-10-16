@@ -3,7 +3,7 @@ module.exports = function (grunt) {
     require('google-closure-compiler').grunt(grunt);
     grunt.initConfig({
         varaibles: {
-            name: "marketing"
+            name: "jwebsite"
         },
         pkg: grunt.file.readJSON('package.json'),
         watch: {

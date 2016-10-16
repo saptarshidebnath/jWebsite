@@ -18,6 +18,7 @@ import static me.saptarshidebnath.jwebsite.utils.Cnst.JPA_DB_CONF_NAME;
 
 /** Created by saptarshi on 9/11/2016. */
 public class JwDbEntityManager {
+
   private static JwDbEntityManager instance = null;
   private EntityManagerFactory entityManagerFactory = null;
   private JinqJPAStreamProvider streams;

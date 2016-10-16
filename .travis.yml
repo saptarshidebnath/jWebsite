@@ -9,11 +9,11 @@ before_install:
 
 install:
   # install without any testing
-  - mvn install -U -Dmaven.test.skip=false -B -V -q -T 2C -C
+  - mvn install -U -Dmaven.test.skip=test -B -V -q -T 2C -C
 
 script:
   # execute unit and integration tests
-  - mvn -e verify -B
+  - mvn test -e verify -B
   
 after_success:
   - bash <(curl -s https://codecov.io/bash)  
