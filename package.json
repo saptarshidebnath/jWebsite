@@ -1,23 +1,20 @@
 {
-  "name": "",
-  "version": "1.0.0",
-  "description": "",
+  "name": "node-sass-testing",
+  "version": "0.0.1",
+  "description": "node sass testing",
+  "main": "index.js",
+  "config": {
+    "loglevel" : "silent"
+  },
   "scripts": {
-    "gwatch": "node -e \"require('grunt').tasks(['gwatch']);\"",
-    "compile": "node -e \"require('grunt').tasks(['compile']);\""
+    "build-css": "node-sass --include-path scss scss/main.scss   public/css/main.css",
+    "start": "node index.js $npm_package_config_myI"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/saptarshidebnath/jwebsite"
-  },
+  "author": "saptarshi",
+  "license": "MIT",
   "dependencies": {
     "compass-importer": "^0.4.1",
-    "google-closure-compiler": "^20160713.1.0",
-    "grunt": "^1.0.1",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-sass": "^1.2.0",
-    "node-sass": "^3.10.1",
-    "nodemon": "^1.11.0"
-  },
-  "license": "SEE LICENSE IN README.MD"
+    "exit-code": "^1.0.2",
+    "node-sass": "^3.10.1"
+  }
 }
