@@ -6,7 +6,7 @@ import me.saptarshidebnath.jwebsite.db.entity.page.WebPage;
 import me.saptarshidebnath.jwebsite.db.entity.website.JwConfig;
 import me.saptarshidebnath.jwebsite.utils.Cnst;
 import me.saptarshidebnath.jwebsite.utils.Utils;
-import me.saptarshidebnath.jwebsite.utils.WebInstInfo;
+import me.saptarshidebnath.jwebsite.utils.WebInstanceConstants;
 import me.saptarshidebnath.jwebsite.utils.jlog.JLog;
 
 import javax.servlet.ServletException;
@@ -131,10 +131,10 @@ public class UrlHandler extends HttpServlet {
                 .getConfigValue();
 
     this.attributeForwardedKey =
-        WebInstInfo.INST.getValueFor(Cnst.WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_NAME);
+        WebInstanceConstants.INST.getValueFor(Cnst.WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_NAME);
 
     this.attributeForwardedValue =
-        WebInstInfo.INST.getValueFor(Cnst.WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_VALUE);
+        WebInstanceConstants.INST.getValueFor(Cnst.WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_VALUE);
 
     JLog.info("JSP dump location : " + this.jspDumpReplativePath);
     JLog.info("Initiated !!");

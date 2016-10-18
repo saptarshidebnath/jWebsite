@@ -41,8 +41,9 @@ public class Cnst {
   public static final String JW_JSP_PREFIX = "gen";
   public static final String JW_JSP_EXTENSION = ".jsp";
 
-  public static final String WIC_KEY_ROOT_REAL_PATH = "KEY_WEB_APP_ROOT_REAL_PATH";
-  public static final String WIC_KEY_JSP_DUMP_PATH = "KEY_WEB_APP_ROOT_REAL_PATH";
+  public static final String DB_CONFIG_KEY_NPM_PACKAGE_NAME = "KEY_NPM_PACKAGE_NAME";
+  public static final String WIC_KEY_ROOT_REAL_PATH = "KEY_ROOT_REAL_PATH";
+  public static final String WIC_KEY_JSP_DUMP_PATH = "KEY_JSP_DUMP_PATH";
   public static final String WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_NAME =
       "WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_NAME";
   public static final String WIC_VALUE_REQ_FORWARD_INDICATOR_ATTR_NAME =

@@ -5,18 +5,18 @@ import me.saptarshidebnath.jwebsite.utils.jlog.JLog;
 import java.util.HashMap;
 
 /** Created by saptarshi on 10/3/2016. */
-public enum WebInstInfo {
+public enum WebInstanceConstants {
   INST;
 
   private final HashMap<String, String> cache;
 
-  private WebInstInfo() {
+  private WebInstanceConstants() {
     this.cache = new HashMap<>();
   }
 
   public String getValueFor(final String key) {
     final String returnValue = this.cache.get(key);
-    JLog.info("Replying back with : " + returnValue);
+    JLog.info("Replying back with >> " + key + " : " + returnValue);
     return returnValue;
   }
 
@@ -26,6 +26,7 @@ public enum WebInstInfo {
     // Check if key exists or not in a synchronized fashion
     //
     synchronized (this.cache) {
+      //      Arrays.asList(Thread.currentThread().getStackTrace()).forEach(System.out::println);
       if (this.cache.containsKey(forKey)) {
         final String currentValue = this.cache.get(forKey);
         JLog.warning(

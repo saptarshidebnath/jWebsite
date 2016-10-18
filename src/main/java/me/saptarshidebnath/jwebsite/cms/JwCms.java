@@ -6,9 +6,10 @@ import me.saptarshidebnath.jwebsite.db.entity.page.MetaInfo;
 import me.saptarshidebnath.jwebsite.db.entity.page.WebPage;
 import me.saptarshidebnath.jwebsite.db.entity.website.JwConfig;
 import me.saptarshidebnath.jwebsite.db.status.PageContent;
+import me.saptarshidebnath.jwebsite.node.NpmPackageInstaller;
 import me.saptarshidebnath.jwebsite.utils.Cnst;
 import me.saptarshidebnath.jwebsite.utils.Utils;
-import me.saptarshidebnath.jwebsite.utils.WebInstInfo;
+import me.saptarshidebnath.jwebsite.utils.WebInstanceConstants;
 import me.saptarshidebnath.jwebsite.utils.jlog.JLog;
 import org.apache.commons.io.FilenameUtils;
 
@@ -20,15 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static me.saptarshidebnath.jwebsite.utils.Cnst.DB_WEBPAGE_ADMIN_PG_UI;
-import static me.saptarshidebnath.jwebsite.utils.Cnst.JW_JSP_EXTENSION;
-import static me.saptarshidebnath.jwebsite.utils.Cnst.JW_JSP_PREFIX;
-import static me.saptarshidebnath.jwebsite.utils.Cnst.WIC_KEY_JSP_DUMP_PATH;
-import static me.saptarshidebnath.jwebsite.utils.Cnst.WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_NAME;
-import static me.saptarshidebnath.jwebsite.utils.Cnst.WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_VALUE;
-import static me.saptarshidebnath.jwebsite.utils.Cnst.WIC_KEY_ROOT_REAL_PATH;
-import static me.saptarshidebnath.jwebsite.utils.Cnst.WIC_VALUE_REQ_FORWARD_INDICATOR_ATTR_NAME;
-import static me.saptarshidebnath.jwebsite.utils.Cnst.WIC_VALUE_REQ_FORWARD_INDICATOR_ATTR_VALUE;
+import static me.saptarshidebnath.jwebsite.utils.Cnst.*;
 import static me.saptarshidebnath.jwebsite.utils.Utils.singletonCollector;
 
 public class JwCms {
@@ -62,7 +55,8 @@ public class JwCms {
     //
     // Check and delete JSP dump location
     //
-    final File jspDumpLocation = new File(WebInstInfo.INST.getValueFor(WIC_KEY_JSP_DUMP_PATH));
+    final File jspDumpLocation =
+        new File(WebInstanceConstants.INST.getValueFor(WIC_KEY_JSP_DUMP_PATH));
     if (jspDumpLocation.exists()) {
       if (jspDumpLocation.delete()) {
         JLog.info("JSP Dump directory deleted : " + jspDumpLocation.getCanonicalPath());
@@ -94,7 +88,8 @@ public class JwCms {
 
     JLog.info(webPage.toString());
 
-    final File fileDirectory = new File(WebInstInfo.INST.getValueFor(WIC_KEY_JSP_DUMP_PATH));
+    final File fileDirectory =
+        new File(WebInstanceConstants.INST.getValueFor(WIC_KEY_JSP_DUMP_PATH));
     fileDirectory.mkdirs();
 
     JLog.info("Target JSP directory : " + fileDirectory.getCanonicalPath());
@@ -104,7 +99,7 @@ public class JwCms {
       //
       final File prevJspFile =
           new File(
-              WebInstInfo.INST.getValueFor(WIC_KEY_JSP_DUMP_PATH)
+              WebInstanceConstants.INST.getValueFor(WIC_KEY_JSP_DUMP_PATH)
                   + File.separator
                   + webPage.getJspFileName());
       if (webPage.getJspFileName() != null
@@ -134,7 +129,8 @@ public class JwCms {
     }
   }
 
-  public void initJwCms(final String realPath) throws IOException, NoSuchAlgorithmException {
+  public void initJwCms(final String realPath)
+      throws IOException, NoSuchAlgorithmException, InterruptedException {
     JLog.info("JwCMS Initiating..");
     //
     // The order is important
@@ -154,6 +150,11 @@ public class JwCms {
     //Publish all jsp files
     //
     this.publishAllWebPages();
+
+    //
+    // Install NPM dependencies
+    //
+    NpmPackageInstaller.getInstance().installAllPackagesMarkedInDataBase();
   }
 
   private void createWICEntries(final String realPath)
@@ -162,7 +163,7 @@ public class JwCms {
     //
     // Store the web app root real path
     //
-    WebInstInfo.INST.storeValue(WIC_KEY_ROOT_REAL_PATH, realPath);
+    WebInstanceConstants.INST.storeValue(WIC_KEY_ROOT_REAL_PATH, realPath);
 
     //
     // Store JSP dump location real path
@@ -177,15 +178,8 @@ public class JwCms {
                 .collect(singletonCollector())
                 .getConfigValue();
 
-    WebInstInfo.INST.storeValue(WIC_KEY_JSP_DUMP_PATH, jspDumpLocation);
+    WebInstanceConstants.INST.storeValue(WIC_KEY_JSP_DUMP_PATH, jspDumpLocation);
 
-    WebInstInfo.INST.storeValue(
-        WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_NAME,
-        Utils.digestStringAsMd5(WIC_VALUE_REQ_FORWARD_INDICATOR_ATTR_NAME));
-
-    WebInstInfo.INST.storeValue(
-        WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_VALUE,
-        Utils.digestStringAsMd5(WIC_VALUE_REQ_FORWARD_INDICATOR_ATTR_VALUE));
     JLog.info("Web Instance cache creation compete");
   }
 
@@ -223,6 +217,23 @@ public class JwCms {
                                     + "Page</h1><p>Today is <%=new java.util.Date().toString()%>"
                                     + "</p></body></html>")
                             .setCreateTime(new Date())))));
+    //
+    //Store npm package names
+    //
+    listOfObjectToPersist.add(
+        new JwConfig().setConfigName(DB_CONFIG_KEY_NPM_PACKAGE_NAME).setConfigValue("grunt"));
+    listOfObjectToPersist.add(
+        new JwConfig().setConfigName(DB_CONFIG_KEY_NPM_PACKAGE_NAME).setConfigValue("grunt-sass"));
+    listOfObjectToPersist.add(
+        new JwConfig().setConfigName(DB_CONFIG_KEY_NPM_PACKAGE_NAME).setConfigValue("node-sass"));
+    listOfObjectToPersist.add(
+        new JwConfig()
+            .setConfigName(DB_CONFIG_KEY_NPM_PACKAGE_NAME)
+            .setConfigValue("compass-importer"));
+    listOfObjectToPersist.add(
+        new JwConfig()
+            .setConfigName(DB_CONFIG_KEY_NPM_PACKAGE_NAME)
+            .setConfigValue("google-closure-compiler"));
     //
     // Persist the entities
     //
