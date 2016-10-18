@@ -1,0 +1,20 @@
+{
+  "name": "node-sass-testing",
+  "version": "0.0.1",
+  "description": "node sass testing",
+  "main": "index.js",
+  "config": {
+    "loglevel" : "silent"
+  },
+  "scripts": {
+    "build-css": "node-sass --include-path scss scss/main.scss   public/css/main.css",
+    "start": "node index.js $npm_package_config_myI"
+  },
+  "author": "saptarshi",
+  "license": "MIT",
+  "dependencies": {
+    "compass-importer": "^0.4.1",
+    "exit-code": "^1.0.2",
+    "node-sass": "^3.10.1"
+  }
+}
