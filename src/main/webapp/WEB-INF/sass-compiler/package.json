@@ -1,0 +1,27 @@
+{
+  "name": "jwebsite-node-sass-compiler",
+  "version": "0.0.1",
+  "description": "Node based sass compiler for jWebsite",
+  "main": "index.js",
+  "config": {
+    "loglevel": "silent"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saptarshidebnath/jwebsite"
+  },
+  "scripts": {
+    "start": "node index.js $npm_package_config_myI"
+  },
+  "author": {
+    "name": "Saptarshi Debnath",
+    "email": "saptarshi.devnath@gmail.com",
+    "url": "https://saptarshidebnath.me/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "compass-importer": "^0.4.1",
+    "exit-code": "^1.0.2",
+    "node-sass": "^3.10.1"
+  }
+}
