@@ -48,14 +48,12 @@ public class Cnst {
       "WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_NAME";
   public static final String WIC_VALUE_REQ_FORWARD_INDICATOR_ATTR_NAME =
       "req-forwarded-" + new Date().toString();
-
   public static final String WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_VALUE =
       "WIC_KEY_REQ_FORWARD_INDICATOR_ATTR_VALUE";
   public static final String WIC_VALUE_REQ_FORWARD_INDICATOR_ATTR_VALUE =
       "request-forwarded-value-true-" + new Date().toString();
-
   public static final int CACHE_VALIDITY_TIME_MILLI = 1000 * 60 * 15;
   public static final int CACHE_VALIDITY_TIME_NOT_STARTED = -1;
-
   public static final String DB_WEBPAGE_ADMIN_PG_UI = "/jwebsite/admin.html";
+  public static final String WIC_KEY_NODE_INST_DIR = "KEY_NODE_INST_DIR";
 }

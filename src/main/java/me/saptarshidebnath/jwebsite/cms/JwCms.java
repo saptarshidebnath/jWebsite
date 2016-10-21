@@ -180,6 +180,8 @@ public class JwCms {
 
     WebInstanceConstants.INST.storeValue(WIC_KEY_JSP_DUMP_PATH, jspDumpLocation);
 
+    WebInstanceConstants.INST.storeValue(
+        WIC_KEY_NODE_INST_DIR, realPath + "WEB-INF" + File.separator + "npm-inst");
     JLog.info("Web Instance cache creation compete");
   }
 
@@ -221,15 +223,13 @@ public class JwCms {
     //Store npm package names
     //
     listOfObjectToPersist.add(
-        new JwConfig().setConfigName(DB_CONFIG_KEY_NPM_PACKAGE_NAME).setConfigValue("grunt"));
-    listOfObjectToPersist.add(
-        new JwConfig().setConfigName(DB_CONFIG_KEY_NPM_PACKAGE_NAME).setConfigValue("grunt-sass"));
-    listOfObjectToPersist.add(
-        new JwConfig().setConfigName(DB_CONFIG_KEY_NPM_PACKAGE_NAME).setConfigValue("node-sass"));
-    listOfObjectToPersist.add(
         new JwConfig()
             .setConfigName(DB_CONFIG_KEY_NPM_PACKAGE_NAME)
             .setConfigValue("compass-importer"));
+    listOfObjectToPersist.add(
+        new JwConfig().setConfigName(DB_CONFIG_KEY_NPM_PACKAGE_NAME).setConfigValue("node-sass"));
+    listOfObjectToPersist.add(
+        new JwConfig().setConfigName(DB_CONFIG_KEY_NPM_PACKAGE_NAME).setConfigValue("exit-code"));
     listOfObjectToPersist.add(
         new JwConfig()
             .setConfigName(DB_CONFIG_KEY_NPM_PACKAGE_NAME)

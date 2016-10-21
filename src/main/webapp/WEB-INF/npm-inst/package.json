@@ -1,7 +1,7 @@
 {
-  "name": "jwebsite-node-sass-compiler",
+  "name": "jwebsite-node-package",
   "version": "0.0.1",
-  "description": "Node based sass compiler for jWebsite",
+  "description": "Node module for jwebsite",
   "main": "index.js",
   "config": {
     "loglevel": "silent"
@@ -11,7 +11,7 @@
     "url": "https://github.com/saptarshidebnath/jwebsite"
   },
   "scripts": {
-    "start": "node index.js $npm_package_config_myI"
+    "sass-compiler": "node sass-compiler.js"
   },
   "author": {
     "name": "Saptarshi Debnath",

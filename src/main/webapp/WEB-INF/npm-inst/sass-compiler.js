@@ -1,3 +1,8 @@
+/*
+Sass compiler using node sass and compass importer
+*/
+
+
 var exitCode = require('exit-code');
 var sass = require('node-sass');
 var compass = require('compass-importer');
